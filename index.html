@@ -106,6 +106,72 @@
         
         document.getElementById('result-area').style.display = 'block';
     }
+    <script>
+let score = 0;
+let q = 0;
+
+const questions = [
+  {
+    text: "Your Facebook bio usually says—",
+    options: [
+      { t: "Just living life", p: 1 },
+      { t: "Truth seeker 🇧🇩", p: 3 },
+      { t: "Ummah over everything", p: 5 }
+    ]
+  },
+  {
+    text: "When news breaks, you trust—",
+    options: [
+      { t: "Multiple sources", p: 1 },
+      { t: "A random page with 12 followers", p: 4 },
+      { t: "Bhai er inbox", p: 5 }
+    ]
+  },
+  {
+    text: "Your most used sentence—",
+    options: [
+      { t: "I might be wrong", p: 0 },
+      { t: "I am not political but—", p: 3 },
+      { t: "History will prove us right", p: 5 }
+    ]
+  }
+];
+
+function loadQ() {
+  if (q >= questions.length) return showResult();
+
+  let html = `<h3>${questions[q].text}</h3>`;
+  questions[q].options.forEach(o => {
+    html += `<button onclick="pick(${o.p})">${o.t}</button>`;
+  });
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function pick(p) {
+  score += p;
+  q++;
+  loadQ();
+}
+
+function showResult() {
+  let resultText = "";
+
+  if (score >= 13) {
+    resultText = "💯% Shibir Bot (Satirical Edition)";
+  } else if (score >= 8) {
+    resultText = "Strong Forwarding Energy ⚡";
+  } else {
+    resultText = "Normal Internet User 😇";
+  }
+
+  document.getElementById("quiz").innerHTML = `
+    <h2>Your Score: ${score}</h2>
+    <p>${resultText}</p>
+    <small>This is satire. No real meaning.</small>
+  `;
+}
+
+loadQ();
 </script>
 
 </body>
