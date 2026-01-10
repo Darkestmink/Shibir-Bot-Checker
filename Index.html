@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shibir Bot Check</title>
+    <style>
+        /* CSS: This makes the site look green and centered */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0fdf4; /* Very light green */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 128, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            border: 2px solid #166534; /* Dark Green Border */
+        }
+        h1 { color: #166534; }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #166534; /* Shibir Green */
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:active { background-color: #14532d; }
+        
+        #result-area {
+            display: none; /* Hidden until clicked */
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #dcfce7;
+            border-radius: 10px;
+        }
+        .score { font-size: 3rem; font-weight: bold; color: #166534; }
+        .rank { font-size: 1.2rem; margin-top: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Shibir Bot Checker 🤖</h1>
+    <p>আপনার নাম লিখুন এবং দেখুন আপনি কত বড় বট!</p>
+    
+    <input type="text" id="username" placeholder="Enter your name...">
+    <button onclick="checkScore()">Check Score</button>
+
+    <div id="result-area">
+        <div id="result-name"></div>
+        <div class="score" id="score-val">0%</div>
+        <div class="rank" id="rank-title"></div>
+    </div>
+</div>
+
+<script>
+    // JAVASCRIPT: The logic for the random score
+    function checkScore() {
+        const name = document.getElementById('username').value;
+        if(name.trim() === "") {
+            alert("নাম তো লিখেন ভাই!");
+            return;
+        }
+
+        // 1. Generate a random score between 0 and 100
+        const score = Math.floor(Math.random() * 101);
+        
+        // 2. Determine the satire rank based on score
+        let rank = "";
+        if (score < 20) {
+            rank = "সাধারণ পাবলিক (Safe)";
+        } else if (score < 50) {
+            rank = "সুশীল সমাজ";
+        } else if (score < 80) {
+            rank = "লুকানো রগ-কাটা";
+        } else {
+            rank = "প্রো ম্যাক্স লেভেল শিবির!";
+        }
+
+        // 3. Show the results
+        document.getElementById('result-name').innerText = name + " is:";
+        document.getElementById('score-val').innerText = score + "%";
+        document.getElementById('rank-title').innerText = rank;
+        
+        document.getElementById('result-area').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
