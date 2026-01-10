@@ -1,112 +1,196 @@
-<!DOCTYPE html>
+    
+    <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shibir Bot Check</title>
     <style>
-        /* CSS: This makes the site look green and centered */
+        /* CSS: Green Theme */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0fdf4; /* Very light green */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0fdf4;
             color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            text-align: center;
+            padding: 20px;
         }
         .container {
             background: white;
             padding: 2rem;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 128, 0, 0.2);
-            width: 90%;
-            max-width: 400px;
-            border: 2px solid #166534; /* Dark Green Border */
+            box-shadow: 0 10px 25px rgba(22, 101, 52, 0.2);
+            width: 100%;
+            max-width: 450px;
+            border: 2px solid #166534;
         }
-        h1 { color: #166534; }
-        input {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        h1 { color: #166534; text-align: center; margin-bottom: 5px;}
+        p { text-align: center; color: #666; margin-top: 0; }
+        
+        /* Input Field */
+        input[type="text"] {
+            width: 93%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #bbf7d0;
+            border-radius: 8px;
             font-size: 16px;
+            outline: none;
         }
+        input[type="text"]:focus { border-color: #166534; }
+
+        /* Question Box Styles */
+        .question-box {
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: left;
+            border: 1px solid #bbf7d0;
+        }
+        .q-title { font-weight: bold; margin-bottom: 10px; color: #14532d; display: block; }
+        
+        label {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: white;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: 0.2s;
+        }
+        label:hover { border-color: #166534; }
+        input[type="radio"] { margin-right: 10px; accent-color: #166534; transform: scale(1.2); }
+
+        /* Button */
         button {
-            background-color: #166534; /* Shibir Green */
+            background-color: #166534;
             color: white;
             border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 5px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
             margin-top: 10px;
+            transition: 0.3s;
         }
-        button:active { background-color: #14532d; }
+        button:hover { background-color: #14532d; transform: translateY(-2px); }
         
+        /* Results Area */
         #result-area {
-            display: none; /* Hidden until clicked */
-            margin-top: 20px;
-            padding: 15px;
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
             background-color: #dcfce7;
             border-radius: 10px;
+            text-align: center;
+            border: 2px dashed #166534;
+            animation: fadeIn 0.5s;
         }
-        .score { font-size: 3rem; font-weight: bold; color: #166534; }
-        .rank { font-size: 1.2rem; margin-top: 5px; font-weight: bold; }
+        .score { font-size: 3.5rem; font-weight: 800; color: #166534; margin: 10px 0; }
+        .rank { font-size: 1.4rem; font-weight: bold; color: #333; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Shibir Bot Checker 🤖</h1>
-    <p>আপনার নাম লিখুন এবং দেখুন আপনি কত বড় বট!</p>
+    <p>সততার সাথে উত্তর দিন!</p>
     
-    <input type="text" id="username" placeholder="Enter your name...">
-    <button onclick="checkScore()">Check Score</button>
+    <input type="text" id="username" placeholder="আপনার নাম লিখুন...">
+
+    <div class="question-box">
+        <span class="q-title">১. ব্রেকিং নিউজ দেখলে আপনি কাকে বিশ্বাস করেন?</span>
+        <label><input type="radio" name="q1" value="0"> Multiple sources (যাচাই করি)</label>
+        <label><input type="radio" name="q1" value="20"> A random page with 12 followers</label>
+        <label><input type="radio" name="q1" value="50"> ভাইয়ার ইনবক্স (Bhai er inbox)</label>
+    </div>
+
+    <div class="question-box">
+        <span class="q-title">২. আপনার সবথেকে বেশি বলা বাক্য—</span>
+        <label><input type="radio" name="q2" value="0"> I might be in the wrong</label>
+        <label><input type="radio" name="q2" value="30"> Shibir and Jamaat Same party na</label>
+        <label><input type="radio" name="q2" value="50"> 1971 was a mistake</label>
+    </div>
+
+    <button onclick="calculateScore()">ফলাফল দেখুন</button>
 
     <div id="result-area">
-        <div id="result-name"></div>
+        <div id="result-name" style="font-weight:bold;"></div>
         <div class="score" id="score-val">0%</div>
         <div class="rank" id="rank-title"></div>
+        <div style="margin-top:15px; font-size: 0.9rem; color: #666;">(Screenshot and share!)</div>
     </div>
 </div>
 
 <script>
-    // JAVASCRIPT: The logic for the random score
-    function checkScore() {
-        const name = document.getElementById('username').value;
-        if(name.trim() === "") {
-            alert("নাম তো লিখেন ভাই!");
+    function calculateScore() {
+        const nameInput = document.getElementById('username').value.trim();
+        
+        // Validation: Must enter name
+        if(nameInput === "") {
+            alert("ভাই নামটা তো লিখেন!");
             return;
         }
 
-        // 1. Generate a random score between 0 and 100
-        const score = Math.floor(Math.random() * 101);
-        
-        // 2. Determine the satire rank based on score
-        let rank = "";
-        if (score < 20) {
-            rank = "সাধারণ পাবলিক (Safe)";
-        } else if (score < 50) {
-            rank = "সুশীল সমাজ";
-        } else if (score < 80) {
-            rank = "লুকানো রগ-কাটা";
-        } else {
-            rank = "প্রো ম্যাক্স লেভেল শিবির!";
+        // Validation: Must select options
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q2 = document.querySelector('input[name="q2"]:checked');
+
+        if(!q1 || !q2) {
+            alert("সব প্রশ্নের উত্তর দিন!");
+            return;
         }
 
-        // 3. Show the results
-        document.getElementById('result-name').innerText = name + " is:";
+        let score = 0;
+        let rank = "";
+
+        // --- THE LOGIC ---
+
+        // 1. Check for the Special Name (Case insensitive)
+        // If name is "Chumu Shofik", score is instantly 100.
+        if (nameInput.toLowerCase() === "chumu shofik") {
+            score = 100;
+        } else {
+            // 2. Normal scoring based on questions
+            // Parse values from string to integer
+            let val1 = parseInt(q1.value);
+            let val2 = parseInt(q2.value);
+            
+            score = val1 + val2;
+        }
+
+        // 3. Assign Ranks based on total score
+        if (score <= 10) {
+            rank = "সাধারণ পাবলিক (Safe ✅)";
+        } else if (score <= 40) {
+            rank = "একটু সন্দেহজনক (Sus 🤔)";
+        } else if (score <= 70) {
+            rank = "লুকানো রগ-কাটা (Hidden Talent 🔪)";
+        } else {
+            rank = "প্রো ম্যাক্স লেভেল শিবির! (Certified 🤖)";
+        }
+
+        // 4. Show Result
+        document.getElementById('result-name').innerText = nameInput + " আপনি হলেন:";
         document.getElementById('score-val').innerText = score + "%";
         document.getElementById('rank-title').innerText = rank;
         
+        // Show the div
         document.getElementById('result-area').style.display = 'block';
+        
+        // Auto scroll to result
+        document.getElementById('result-area').scrollIntoView({behavior: "smooth"});
     }
-    
 </script>
 
 </body>
